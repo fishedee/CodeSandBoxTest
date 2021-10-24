@@ -19,7 +19,7 @@ import {
   onFieldChange,
   createForm,
 } from '@formily/core';
-import { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import 'antd/dist/antd.css';
 
 const SchemaField = createSchemaField({
