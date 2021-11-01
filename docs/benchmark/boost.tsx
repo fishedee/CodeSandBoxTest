@@ -29,20 +29,6 @@ const SchemaField = createSchemaField({
   },
 });
 
-const MyInput: React.FC<any> = observer((props) => {
-  console.log('render MyInput');
-  const { data, dataKey, ...resetProps } = props;
-
-  return (
-    <Input
-      {...resetProps}
-      value={data[dataKey]}
-      onChange={(e) => {
-        data[dataKey] = e.target.value;
-      }}
-    />
-  );
-});
 const BoostTable: React.FC<any> = (props) => {
   const form = useMemo(() => {
     return createForm({
@@ -83,10 +69,12 @@ const BoostTable: React.FC<any> = (props) => {
     });
   };
   const myInputRender = useCallback(
-    (data: any[], index: string, dataKey: string) => {
-      const inData = getDataInIndex(data, index);
-
-      return <MyInput data={inData} dataKey={dataKey} />;
+    (data: any, index: string, dataKey: string) => {
+      const value = data[dataKey];
+      const onChange = (e) => {
+        data[dataKey] = e.target.value;
+      };
+      return <Input value={value} onChange={onChange} />;
     },
     [],
   );
