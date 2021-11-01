@@ -142,6 +142,19 @@ const OriginTable: React.FC<any> = (props) => {
         );
       },
     },
+    {
+      title: '操作',
+      key: 'operation',
+      render: (value: any, row: any, index: any) => {
+        const onDel = () => {
+          const newData = produce(data, (state) => {
+            state.splice(index, 1);
+          });
+          setData(newData);
+        };
+        return <a onClick={onDel}>{'删除'}</a>;
+      },
+    },
   ];
 
   return (

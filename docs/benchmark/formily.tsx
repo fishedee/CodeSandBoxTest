@@ -133,6 +133,19 @@ const FormilyTable: React.FC<any> = observer((props) => {
         return <MyInput data={row} dataKey={'name5'} />;
       },
     },
+    {
+      title: '操作',
+      key: 'operation',
+      render: (value: any, row: any, index: any) => {
+        const onDel = () => {
+          let newData = data.list.filter((k, i) => {
+            return i != index;
+          });
+          data.list = newData;
+        };
+        return <a onClick={onDel}>{'删除'}</a>;
+      },
+    },
   ];
 
   return (

@@ -116,6 +116,19 @@ const OriginTable: React.FC<any> = (props) => {
         );
       },
     },
+    {
+      title: '操作',
+      key: 'operation',
+      render: (value: any, row: any, index: any) => {
+        const onDel = () => {
+          let newData = data.filter((k, i) => {
+            return i != index;
+          });
+          setData(newData);
+        };
+        return <a onClick={onDel}>{'删除'}</a>;
+      },
+    },
   ];
   const onAdd = () => {
     const newId = data.length;

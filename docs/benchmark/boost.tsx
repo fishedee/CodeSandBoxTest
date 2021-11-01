@@ -148,6 +148,20 @@ const BoostTable: React.FC<any> = (props) => {
               },
             }}
           />
+          <SchemaField.Void
+            name="operation"
+            title="操作"
+            x-component="Table.Column"
+            x-component-props={{
+              width: '50px',
+            }}
+          >
+            <SchemaField.Void
+              name="delete"
+              title="删除"
+              x-component={'Table.Remove'}
+            />
+          </SchemaField.Void>
         </SchemaField.Void>
       </SchemaField.Array>
     </SchemaField>
