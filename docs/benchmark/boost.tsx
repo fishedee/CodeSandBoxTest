@@ -9,6 +9,7 @@ import { Table, getDataInIndex, setDataInIndex } from 'antd-formily-boost';
 import { createSchemaField, observer, FormConsumer } from '@formily/react';
 import { createForm } from '@formily/core';
 import { Form } from '@formily/antd';
+import { useCallback } from 'react';
 type DataSourceType = {
   id: number;
   age: number;
@@ -28,6 +29,20 @@ const SchemaField = createSchemaField({
   },
 });
 
+const MyInput: React.FC<any> = observer((props) => {
+  console.log('render MyInput');
+  const { data, dataKey, ...resetProps } = props;
+
+  return (
+    <Input
+      {...resetProps}
+      value={data[dataKey]}
+      onChange={(e) => {
+        data[dataKey] = e.target.value;
+      }}
+    />
+  );
+});
 const BoostTable: React.FC<any> = (props) => {
   const form = useMemo(() => {
     return createForm({
@@ -42,7 +57,7 @@ const BoostTable: React.FC<any> = (props) => {
   }, []);
   useEffect(() => {
     let result: DataSourceType[] = [];
-    for (let i = 0; i != 10; i++) {
+    for (let i = 0; i != 100; i++) {
       result.push({
         id: i,
         age: i + 100,
@@ -55,15 +70,26 @@ const BoostTable: React.FC<any> = (props) => {
     }
     form.values.list = result;
   }, []);
-  const myInputRender = (data: any[], index: string) => {
-    const value = getDataInIndex(data, index);
-    const onChange = (e) => {
-      const newValue = e.target.value;
-      setDataInIndex(data, index, newValue);
-    };
-
-    return <Input value={value} onChange={onChange} />;
+  const onAdd = () => {
+    const newId = form.values.list.length;
+    form.values.list.push({
+      id: newId,
+      age: newId + 100,
+      name: 'name_' + newId,
+      name2: 'name2_' + newId,
+      name3: 'name3_' + newId,
+      name4: 'name4_' + newId,
+      name5: 'name5_' + newId,
+    });
   };
+  const myInputRender = useCallback(
+    (data: any[], index: string, dataKey: string) => {
+      const inData = getDataInIndex(data, index);
+
+      return <MyInput data={inData} dataKey={dataKey} />;
+    },
+    [],
+  );
 
   const listSchema = (
     <SchemaField>
@@ -94,7 +120,7 @@ const BoostTable: React.FC<any> = (props) => {
             x-component="Table.Column"
             x-component-props={{
               render: (data: any[], index: string) => {
-                return myInputRender(data, index + '.name');
+                return myInputRender(data, index, 'name');
               },
             }}
           />
@@ -103,7 +129,7 @@ const BoostTable: React.FC<any> = (props) => {
             x-component="Table.Column"
             x-component-props={{
               render: (data: any[], index: string) => {
-                return myInputRender(data, index + '.name2');
+                return myInputRender(data, index, 'name2');
               },
             }}
           />
@@ -112,7 +138,7 @@ const BoostTable: React.FC<any> = (props) => {
             x-component="Table.Column"
             x-component-props={{
               render: (data: any[], index: string) => {
-                return myInputRender(data, index + '.name3');
+                return myInputRender(data, index, 'name3');
               },
             }}
           />
@@ -121,7 +147,7 @@ const BoostTable: React.FC<any> = (props) => {
             x-component="Table.Column"
             x-component-props={{
               render: (data: any[], index: string) => {
-                return myInputRender(data, index + '.name4');
+                return myInputRender(data, index, 'name4');
               },
             }}
           />
@@ -130,7 +156,7 @@ const BoostTable: React.FC<any> = (props) => {
             x-component="Table.Column"
             x-component-props={{
               render: (data: any[], index: string) => {
-                return myInputRender(data, index + '.name5');
+                return myInputRender(data, index, 'name5');
               },
             }}
           />
@@ -139,7 +165,14 @@ const BoostTable: React.FC<any> = (props) => {
     </SchemaField>
   );
 
-  return <Form form={form}>{listSchema}</Form>;
+  return (
+    <Form form={form}>
+      <div>
+        <button onClick={onAdd}>{'添加一行'}</button>
+        {listSchema}
+      </div>
+    </Form>
+  );
 };
 
 const Wrapper: React.FC<any> = (props) => {

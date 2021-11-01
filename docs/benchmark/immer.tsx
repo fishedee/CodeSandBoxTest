@@ -48,6 +48,21 @@ const OriginTable: React.FC<any> = (props) => {
     });
     setData(newData);
   };
+  const onAdd = () => {
+    const newData = produce(data, (state) => {
+      const newId = state.length;
+      state.push({
+        id: newId,
+        age: newId + 100,
+        name: 'name_' + newId,
+        name2: 'name2_' + newId,
+        name3: 'name3_' + newId,
+        name4: 'name4_' + newId,
+        name5: 'name5_' + newId,
+      });
+    });
+    setData(newData);
+  };
   console.log('render top origin');
   const columns = [
     {
@@ -130,12 +145,15 @@ const OriginTable: React.FC<any> = (props) => {
   ];
 
   return (
-    <Table
-      pagination={false}
-      rowKey={'id'}
-      columns={columns}
-      dataSource={data}
-    />
+    <div>
+      <button onClick={onAdd}>{'添加一行'}</button>
+      <Table
+        pagination={false}
+        rowKey={'id'}
+        columns={columns}
+        dataSource={data}
+      />
+    </div>
   );
 };
 

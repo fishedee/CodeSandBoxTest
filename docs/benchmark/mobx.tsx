@@ -58,6 +58,21 @@ const MobxTable: React.FC<any> = observer((props) => {
     }
     data.list = result;
   }, []);
+  const onAdd = () => {
+    const newId = data.list.length;
+    data.list = [
+      ...data.list,
+      {
+        id: newId,
+        age: newId + 100,
+        name: 'name_' + newId,
+        name2: 'name2_' + newId,
+        name3: 'name3_' + newId,
+        name4: 'name4_' + newId,
+        name5: 'name5_' + newId,
+      },
+    ];
+  };
   console.log('render top mobx');
   const columns = [
     {
@@ -121,12 +136,15 @@ const MobxTable: React.FC<any> = observer((props) => {
   ];
 
   return (
-    <Table
-      pagination={false}
-      rowKey={'id'}
-      columns={columns}
-      dataSource={data.list}
-    />
+    <div>
+      <button onClick={onAdd}>{'添加一行'}</button>
+      <Table
+        pagination={false}
+        rowKey={'id'}
+        columns={columns}
+        dataSource={data.list}
+      />
+    </div>
   );
 });
 
