@@ -19,3 +19,7 @@ nav:
 ## Immer 实现
 
 <code src="./immer.tsx"></code>
+
+## Boost 实现
+
+<code src="./boost.tsx"></code>
