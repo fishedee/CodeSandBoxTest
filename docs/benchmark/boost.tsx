@@ -78,6 +78,12 @@ const BoostTable: React.FC<any> = (props) => {
     },
     [],
   );
+  const renderDelButton = useCallback((rowData: any, index: string) => {
+    const onDel = () => {
+      form.values.list.splice(parseInt(index), 1);
+    };
+    return <a onClick={onDel}>{'删除'}</a>;
+  }, []);
 
   const listSchema = (
     <SchemaField>
@@ -154,14 +160,9 @@ const BoostTable: React.FC<any> = (props) => {
             x-component="Table.Column"
             x-component-props={{
               width: '50px',
+              render: renderDelButton,
             }}
-          >
-            <SchemaField.Void
-              name="delete"
-              title="删除"
-              x-component={'Table.Remove'}
-            />
-          </SchemaField.Void>
+          />
         </SchemaField.Void>
       </SchemaField.Array>
     </SchemaField>
