@@ -9,27 +9,22 @@ import { Form, FormItem, Input, Select } from '@formily/antd';
 import React, { useMemo } from 'react';
 import { Button } from 'antd';
 import { observer } from '@formily/reactive-react';
-import { observable } from '@formily/reactive';
+import { observable, observe } from '@formily/reactive';
 import 'antd/dist/antd.compact.css';
-import { useState } from 'react';
-
-const MyInput = observer((props: any) => {
-  const { getPlaceholder, ...resetProps } = props;
-  return <Input {...resetProps} placeholder={getPlaceholder().placeholder} />;
-});
 
 const SchemaField = createSchemaField({
   components: {
     FormItem,
-    MyInput,
+    Input,
     Select,
   },
 });
 
-export default () => {
+export default observer(() => {
   let argv = useMemo(() => {
     return observable({
       placeholder: 'do1',
+      title: 'title1',
     });
   }, []);
   const form = useMemo(() => {
@@ -43,6 +38,7 @@ export default () => {
       },
     });
   }, []);
+  //切换失败
   const toggleSelect = () => {
     if (argv.placeholder.length == 3) {
       argv.placeholder = 'do23';
@@ -50,18 +46,27 @@ export default () => {
       argv.placeholder = 'do1';
     }
   };
+  //切换失败
+  const toggleTitle = () => {
+    if (argv.title == 'title1') {
+      argv.title = 'title2';
+    } else {
+      argv.title = 'title1';
+    }
+  };
   console.log('render1');
   return (
     <div>
       <Button onClick={toggleSelect}>切换Select</Button>
+      <Button onClick={toggleTitle}>切换Title</Button>
       <Form form={form} feedbackLayout="terse">
         <SchemaField>
           <SchemaField.String
-            name="title"
+            title={argv.title}
             x-decorator={'FormItem'}
-            x-component={'MyInput'}
+            x-component={'Input'}
             x-component-props={{
-              getPlaceholder: () => argv,
+              placeholder: argv.placeholder,
             }}
           />
         </SchemaField>
@@ -71,4 +76,4 @@ export default () => {
       </Form>
     </div>
   );
-};
+});

@@ -1,6 +1,5 @@
 import {
   createForm,
-  Field,
   onFieldChange,
   onFieldInputValueChange,
 } from '@formily/core';
@@ -10,37 +9,20 @@ import React, { useMemo } from 'react';
 import { Button } from 'antd';
 import { observer } from '@formily/reactive-react';
 import { observable } from '@formily/reactive';
+import { Field } from '@formily/react';
 import 'antd/dist/antd.compact.css';
-import { useState } from 'react';
 
-const MyInput = observer((props: any) => {
-  const { placeholderRef, ...resetProps } = props;
-  return <Input {...resetProps} placeholder={placeholderRef.placeholder} />;
-});
-
-const SchemaField = createSchemaField({
-  components: {
-    FormItem,
-    MyInput,
-    Select,
-  },
-});
-
-export default () => {
+export default observer(() => {
   let argv = useMemo(() => {
     return observable({
       placeholder: 'do1',
+      title: 'title1',
     });
   }, []);
   const form = useMemo(() => {
     return createForm({
       values: {},
-      effects: () => {
-        onFieldInputValueChange('title', (field) => {
-          const field2 = field as Field;
-          console.log('title change to ', field2.value);
-        });
-      },
+      effects: () => {},
     });
   }, []);
   const toggleSelect = () => {
@@ -50,25 +32,29 @@ export default () => {
       argv.placeholder = 'do1';
     }
   };
+  //切换失败
+  const toggleTitle = () => {
+    if (argv.title == 'title1') {
+      argv.title = 'title2';
+    } else {
+      argv.title = 'title1';
+    }
+  };
   console.log('render2');
   return (
     <div>
       <Button onClick={toggleSelect}>切换Select</Button>
+      <Button onClick={toggleTitle}>切换Title</Button>
       <Form form={form} feedbackLayout="terse">
-        <SchemaField>
-          <SchemaField.String
-            name="title"
-            x-decorator={'FormItem'}
-            x-component={'MyInput'}
-            x-component-props={{
-              placeholderRef: argv,
-            }}
-          />
-        </SchemaField>
+        <Field
+          name="title"
+          component={[Input, { placeholder: argv.placeholder }]}
+          decorator={[FormItem, { title: '123' }]}
+        />
         <FormConsumer>
           {() => <div>{JSON.stringify(form.values)}</div>}
         </FormConsumer>
       </Form>
     </div>
   );
-};
+});
