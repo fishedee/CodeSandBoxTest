@@ -12,6 +12,10 @@ nav:
 
 <code src="./formily.tsx"></code>
 
+## @formily/antd 实现
+
+<code src="./formily_antd.tsx"></code>
+
 ## MobX 实现
 
 <code src="./mobx.tsx"></code>
